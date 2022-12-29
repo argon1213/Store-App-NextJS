@@ -1,0 +1,124 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "Next Store client-side",
+  "author": "Alexandra Swart",
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "next start -p $PORT",
+    "start:dev": "next -p 7272",
+    "build": "next build",
+    "heroku-postbuild": "next build",
+    "jest": "NODE_ENV=test jest --verbose --watch",
+    "test": "NODE_ENV=test jest --coverage --verbose",
+    "coveralls": "npm test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "heroku-logs-client": "cd .. && heroku logs --tail --app answart-next-store",
+    "heroku-push-client": "cd .. && git subtree push --prefix client heroku-client-side master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Answart/next-store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Answart/next-store/issues"
+  },
+  "homepage": "https://github.com/Answart/next-store#readme",
+  "dependencies": {
+    "apollo-boost": "^0.4.4",
+    "babel-core": "^6.26.3",
+    "babel-plugin-styled-components": "^1.10.6",
+    "cookie": "^0.3.1",
+    "coveralls": "^3.0.3",
+    "date-fns": "^1.30.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "graphql": "^14.5.4",
+    "graphql-tag": "^2.10.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.0.5",
+    "nprogress": "^0.2.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-apollo": "^3.1.0",
+    "react-dom": "^16.9.0",
+    "react-transition-group": "^4.3.0",
+    "styled-components": "^4.3.2",
+    "subscriptions-transport-ws": "^0.9.16",
+    "waait": "^1.0.4"
+  },
+  "devDependencies": {
+    "babel-jest": "^24.8.0",
+    "casual": "^1.6.0",
+    "enzyme-to-json": "^3.4.0",
+    "jest": "^24.8.0",
+    "jest-transform-graphql": "^2.1.0"
+  },
+  "babel": {
+    "env": {
+      "development": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
+            }
+          ]
+        ]
+      },
+      "production": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
+            }
+          ]
+        ]
+      },
+      "test": {
+        "presets": [
+          [
+            "next/babel",
+            {
+              "preset-env": {
+                "modules": "commonjs"
+              }
+            }
+          ]
+        ],
+        "plugins": [
+          [
+            "styled-components",
+            {
+              "ssr": true,
+              "displayName": true
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/__tests__/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "\\.(gql|graphql)$": "jest-transform-graphql",
+      ".*": "babel-jest"
+    }
+  }
+}

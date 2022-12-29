@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+**/.DS_Store
+*.log
+.next/
+.build/
+dist
+layout.md
+.env
+now.json
+.graphcoolrc
+package-lock.json
+.coveralls.yml
+coverage

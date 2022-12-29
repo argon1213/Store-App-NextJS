@@ -1,0 +1,108 @@
+enum Permission {
+  ADMIN
+  USER
+  PRODUCTCREATE
+  PRODUCTUPDATE
+  PRODUCTDELETE
+  PERMISSIONUPDATE
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission]
+  cart: [CartItem!]! @relation(name: "UserCart", onDelete: CASCADE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Image {
+  id: ID! @unique
+  cloudinary_id: String! @unique
+  name: String!
+  height: Int!
+  width: Int!
+  transformation: String!
+  image_url: String!
+  large_image_url: String!
+  user: User!
+  product: Product @relation(name: "ProductImages")
+  used_by_product: Product @relation(name: "ProductImage")
+  used_by_variants: [Variant] @relation(name: "VariantImage")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Product {
+  id: ID! @unique
+  title: String! @unique
+  department: String!
+  description: String!
+  online: Boolean!
+  category: String
+  brand: String
+  user: User!
+  variants: [Variant!]! @relation(name: "ProductVariants", onDelete: CASCADE)
+  images: [Image!]! @relation(name: "ProductImages", onDelete: CASCADE)
+  image: Image @relation(name: "ProductImage")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Variant {
+  id: ID! @unique
+  price: Float!
+  quantity: Int! @default(value: 1)
+  availability: String @default(value: "1 in Stock!")
+  color: String
+  size: String
+  sale: Boolean! @default(value: false)
+  salePrice: Float! @default(value: 1.00)
+  product: Product! @relation(name: "ProductVariants")
+  image: Image @relation(name: "VariantImage")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CartItem {
+  id: ID! @unique
+  quantity: Int! @default(value: 1)
+  variant: Variant
+  user: User! @relation(name: "UserCart")
+}
+
+type OrderItem {
+  id: ID! @unique
+  title: String!
+  price: Float!
+  quantity: Int! @default(value: 1)
+  color: String
+  size: String
+  image_url: String!
+  seller: User
+  variant: Variant
+  order: Order @relation(name: "OrderItems")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Order {
+  id: ID! @unique
+  status: String! @default(value: "processing")
+  quantity: Int! @default(value: 1)
+  subtotal: Float!
+  shipping: Float!
+  tax: Float!
+  total: Float!
+  sales_tax_rate: Float!
+  shipping_rate: Float!
+  payment: String!
+  items: [OrderItem!]! @relation(name: "OrderItems", onDelete: CASCADE)
+  buyer: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}

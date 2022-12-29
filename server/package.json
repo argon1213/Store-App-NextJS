@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Next Store server-side",
+  "main": "index.js",
+  "author": "Alexandra Swart",
+  "license": "ISC",
+  "scripts": {
+    "start:dev": "nodemon -e js,graphql -x node --inspect src/index.js",
+    "start": "cross-env NODE_ENV=production nodemon -e js,graphql -x node src/index.js",
+    "now-build": "rm -rf dist && npm run deploy:dev && npm run test",
+    "deploy:dev": "prisma deploy --env-file .env",
+    "deploy": "cross-env NODE_ENV=production prisma deploy --env-file .env",
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "heroku-logs-server": "cd .. && heroku logs --tail --app next-store-yoga",
+    "heroku-push-server": "cd .. && git subtree push --prefix server heroku-server-side master"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "bcryptjs": "2.4.3",
+    "cookie-parser": "^1.4.4",
+    "cross-env": "^5.2.0",
+    "dotenv": "^6.1.0",
+    "graphql": "^0.13.2",
+    "graphql-cli": "^3.0.14",
+    "graphql-yoga": "1.16.7",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^5.0.0",
+    "nodemon": "1.18.5",
+    "prisma": "^1.34.8",
+    "prisma-binding": "^2.3.16"
+  },
+  "devDependencies": {},
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  }
+}
